@@ -9,7 +9,9 @@ import sys
 def export_to_csv(employee_id):
     """Export TODO list data for a given employee ID to a CSV file."""
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todo_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    todo_url = (
+        f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    )
 
     user_info = requests.get(url).json()
     todo_info = requests.get(todo_url).json()
