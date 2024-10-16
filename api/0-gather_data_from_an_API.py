@@ -1,26 +1,27 @@
 #!/usr/bin/python3
-"""Script to gather TODO list progress of an employee from a REST API"""
+"""Script to gather data from an API"""
 
 import requests
 import sys
 
 
-def get_employee_todo_progress(employee_id):
-    """Fetch and display TODO progress for a given employee ID."""
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todo_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+def gather_data(employee_id):
+    """Gather TODO list data for a given employee ID."""
+    base_url = "https://jsonplaceholder.typicode.com"
+    user_url = f"{base_url}/users/{employee_id}"
+    todo_url = f"{base_url}/todos?userId={employee_id}"
 
-    user_info = requests.get(url).json()
+    user_info = requests.get(user_url).json()
     todo_info = requests.get(todo_url).json()
 
-    employee_name = user_info.get("name")
-    total_tasks = list(filter(lambda x: x.get("completed") is True, todo_info))
-    task_com = len(total_tasks)
-    total_task_done = len(todo_info)
+    completed_tasks = [task for task in todo_info if task.get("completed")]
 
-    print(f"Employee {employee_name} is done with tasks({task_com}/{total_task_done}):")
-
-    [print(f"\t {task.get('title')}") for task in total_tasks]
+    print(
+        f"Employee {user_info.get('name')} is done with "
+        f"{len(completed_tasks)}/{len(todo_info)} tasks:"
+    )
+    for task in completed_tasks:
+        print(f"\t {task.get('title')}")
 
 
 if __name__ == "__main__":
@@ -30,7 +31,7 @@ if __name__ == "__main__":
 
     try:
         employee_id = int(sys.argv[1])
-        get_employee_todo_progress(employee_id)
+        gather_data(employee_id)
     except ValueError:
         print("Please provide a valid integer for the employee ID.")
         sys.exit(1)
