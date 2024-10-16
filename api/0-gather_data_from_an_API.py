@@ -4,6 +4,7 @@
 import requests
 import sys
 
+
 def get_employee_todo_progress(employee_id):
     """Fetch and display TODO progress for a given employee ID."""
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
@@ -20,6 +21,7 @@ def get_employee_todo_progress(employee_id):
     print(f"Employee {employee_name} is done with tasks({task_com}/{total_task_done}):")
 
     [print(f"\t {task.get('title')}") for task in total_tasks]
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
